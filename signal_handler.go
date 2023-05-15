@@ -7,13 +7,11 @@ import (
 	"syscall"
 )
 
-func SignalHandler() {
+func init() {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.Signal(0xa))
-	for {
-		if <-sigs == syscall.Signal(0xa) {
-			log.Print("Recieved 0xa, reloading config")
-			LoadConfig()
-		}
+	for syscall.Signal(0xa) == <-sigs {
+		log.Print("Recieved 0xa, reloading config")
+		LoadConfig()
 	}
 }

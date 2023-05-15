@@ -1,19 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"github.com/VividCortex/godaemon"
-	"gopkg.in/alecthomas/kingpin.v2"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"os"
+
+	"github.com/VividCortex/godaemon"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
 	routedHostnames map[string]int
-	Sites           []Site
-	HTTPClient      http.Client
+	//Sites contains every routed site
+	Sites []Site
+	//HTTPClient is the client used to perform proxied requests
+	HTTPClient http.Client
 )
 
 var (
@@ -47,11 +49,9 @@ func main() {
 
 	LoadConfig()
 
-	go SignalHandler()
-
 	log.Fatal(http.ListenAndServe(*bindAddr, &httputil.ReverseProxy{
 		Director: func(r *http.Request) {
-			HTTPLogger(r)
+			HTTPLog(r)
 			if i, ok := routedHostnames[string(r.Host)]; ok {
 				r.Header.Set("X-Hostsplitter-Secret", Sites[i].Secret)
 				r.Header.Set("Host", r.Host)
@@ -59,12 +59,13 @@ func main() {
 				r.URL.Host = Sites[i].GetBackend()
 				r.RequestURI = ""
 			} else {
-				log.Print("%q is not routed", r.Host)
+				log.Printf("%q is not routed", r.Host)
 			}
 		},
 	}))
 }
 
-func HTTPLogger(r *http.Request) {
-	log.Print(fmt.Sprintf("httplog> %v %v (%v) (conlen %v)", r.Host, r.Method, r.RequestURI, r.RemoteAddr))
+//HTTPLog logs an HTTP request
+func HTTPLog(r *http.Request) {
+	log.Printf("httplog> %v %v (%v) (conlen %v)", r.Host, r.Method, r.RequestURI, r.RemoteAddr)
 }

@@ -13,6 +13,7 @@ var (
 	config map[string]interface{}
 )
 
+//LoadConfig loads the config and prints an error if one is encountered
 func LoadConfig() {
 	stagedRoutedHostnames := make(map[string]int)
 	stagedSites := []Site{}
