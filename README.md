@@ -22,7 +22,7 @@ A each site file should look like
 }
 ```
 
-The "secret" field is passed along with every request to that site in the ``Hostsplitter-Secret`` header. This is intended to be checked before trusting the passed along IP.
+The "secret" field is passed along with every request to that site in the ``X-Hostsplitter-Secret`` header. This is intended to be checked before trusting the passed along IP.
 
 ## Real IP 
 The original requester's IP is located in the ``X-Forwarded-For`` header.

@@ -53,7 +53,7 @@ func main() {
 		Director: func(r *http.Request) {
 			HTTPLogger(r)
 			if i, ok := routedHostnames[string(r.Host)]; ok {
-				r.Header.Set("Hostsplitter-Secret", Sites[i].Secret)
+				r.Header.Set("X-Hostsplitter-Secret", Sites[i].Secret)
 				r.Header.Set("Host", r.Host)
 				r.URL.Scheme = "http"
 				r.URL.Host = Sites[i].GetBackend()
