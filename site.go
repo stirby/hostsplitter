@@ -8,19 +8,19 @@ type Site struct {
 }
 
 //GetBackend returns the next backend according using round robin
-func (this *Site) GetBackend() string {
-	if len(this.Backends) == 0 {
+func (site *Site) GetBackend() string {
+	if len(site.Backends) == 0 {
 		return ""
 	}
 
-	//This code is racy but there's not much reason to make it synchronized
-	index := this.backendIndex
+	//site code is racy but there's not much reason to make it synchronized
+	index := site.backendIndex
 
-	if this.backendIndex == len(this.Backends)-1 {
-		this.backendIndex = 0
+	if site.backendIndex == len(site.Backends)-1 {
+		site.backendIndex = 0
 	} else {
-		this.backendIndex = this.backendIndex + 1
+		site.backendIndex = site.backendIndex + 1
 	}
 
-	return this.Backends[index]
+	return site.Backends[index]
 }
