@@ -67,5 +67,5 @@ func main() {
 
 //HTTPLog logs an HTTP request
 func HTTPLog(r *http.Request) {
-	log.Printf("httplog> %v %v (%v) (conlen %v)", r.Host, r.Method, r.RequestURI, r.RemoteAddr)
+	log.Printf("httplog> %v %v %v (%q)", r.RemoteAddr, r.Method, r.Host, r.RequestURI)
 }
